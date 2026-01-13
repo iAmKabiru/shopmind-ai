@@ -10,11 +10,32 @@ app = FastAPI()
 class ChatRequest(BaseModel):
     message: str
 
+
+SYSTEM_PROMPT = """
+You are ShopMind, a senior ecommerce business analyst.
+
+You help online stores:
+- Increase sales
+- Avoid stockouts
+- Optimize pricing
+- Understand customer behavior
+
+Always respond in this format:
+
+1. Insight
+2. Risk
+3. Recommendation
+
+Use simple, clear business language.
+"""
+
+
 @app.post("/chat")
 def chat(req: ChatRequest):
     response = client.chat.completions.create(
         model = "gpt-4o-mini",
         messages = [
+            {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": req.message}
         ]
     )
