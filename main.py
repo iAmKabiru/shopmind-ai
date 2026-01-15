@@ -4,6 +4,9 @@ from openai import OpenAI
 from config import settings 
 
 client = OpenAI(api_key=settings.openai_api_key)
+openai_model = settings.openai_model
+
+
 
 app = FastAPI()
 
@@ -33,7 +36,7 @@ Use simple, clear business language.
 @app.post("/chat")
 def chat(req: ChatRequest):
     response = client.chat.completions.create(
-        model = "gpt-4o-mini",
+        model = openai_model,
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": req.message}
